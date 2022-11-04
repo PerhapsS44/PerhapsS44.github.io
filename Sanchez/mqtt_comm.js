@@ -1,23 +1,25 @@
 // MQTT client details:
 let broker = {
-    hostname: "localhost",
-    port: 9001,
+    host: "rabbitmq-mqtt-jx-staging.jenkinsx.globalintelligence.ro",
+    port: 443,
+    path: "/ws",
 };
 // MQTT client:
 let client;
 // client credentials:
 let creds = {
     clientID: "p5Client",
-    userName: "mqtt",
-    password: "demopass",
+    userName: "caviuser",
+    password: "cavipassword",
 };
 // topic to subscribe to when you connect:
 let topic = "lummetry/payloads";
 
 function createClient(onMessage) {
     client = new Paho.MQTT.Client(
-        broker.hostname,
+        broker.host,
         Number(broker.port),
+        broker.path,
         creds.clientID
     );
     // set callback handlers for the client:
@@ -28,7 +30,7 @@ function createClient(onMessage) {
         onSuccess: onConnect, // callback function for when you connect
         userName: creds.userName, // username
         password: creds.password, // password
-        useSSL: false, // use SSL
+        useSSL: true, // use SSL
     });
 
     // // create the send button:
