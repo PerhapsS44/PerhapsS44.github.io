@@ -26,7 +26,7 @@ function draw() {
         !scene_state.sanchez
     ) {
         console.log("The input data is not from SANCHEZ!");
-        noLoop();
+    } else {
+        draw_frame(scene_state);
     }
-    draw_frame(scene_state);
 }
