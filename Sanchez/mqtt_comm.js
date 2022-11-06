@@ -15,7 +15,7 @@ let creds = {
 // topic to subscribe to when you connect:
 let topic = "lummetry/payloads";
 
-function createClient(onMessage) {
+function createClient() {
     client = new Paho.MQTT.Client(
         broker.host,
         Number(broker.port),
@@ -31,6 +31,7 @@ function createClient(onMessage) {
         userName: creds.userName, // username
         password: creds.password, // password
         useSSL: true, // use SSL
+        reconnect: true, // if connection fails, retry
     });
 
     // // create the send button:
@@ -53,7 +54,7 @@ function onConnectionLost(response) {
 }
 
 // called when a message arrives
-function onMessageArrived(message, callback) {
+function onMessageArrived(message) {
     data = message.payloadString;
 }
 
