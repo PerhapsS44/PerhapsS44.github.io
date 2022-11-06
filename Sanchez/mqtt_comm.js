@@ -13,7 +13,8 @@ let creds = {
     password: "cavipassword",
 };
 // topic to subscribe to when you connect:
-let topic = "lummetry/payloads";
+let receive_topic = "lummetry/payloads";
+let send_topic = `lummetry/lumm_dev/config`;
 
 function createClient() {
     client = new Paho.MQTT.Client(
@@ -42,14 +43,14 @@ function createClient() {
 
 // called when the client connects
 function onConnect() {
-    console.log("client is connected");
-    client.subscribe(topic);
+    console.debug("client is connected");
+    client.subscribe(receive_topic);
 }
 
 // called when the client loses its connection
 function onConnectionLost(response) {
     if (response.errorCode !== 0) {
-        console.log("onConnectionLost:" + response.errorMessage);
+        console.debug("onConnectionLost:" + response.errorMessage);
     }
 }
 
@@ -59,15 +60,13 @@ function onMessageArrived(message) {
 }
 
 // called when you want to send a message:
-function sendMqttMessage() {
+function sendMqttMessage(msg) {
     // if the client is connected to the MQTT broker:
     if (client.isConnected()) {
-        // make a string with a random number form 0 to 15:
-        let msg = String(round(random(15)));
         // start an MQTT message:
-        message = new Paho.MQTT.Message(msg);
+        message = new Paho.MQTT.Message(String(msg));
         // choose the destination topic:
-        message.destinationName = topic;
+        message.destinationName = send_topic;
         // send it:
         client.send(message);
         // print what you sent:
